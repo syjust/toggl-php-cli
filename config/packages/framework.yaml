@@ -17,6 +17,15 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        scoped_clients:
+            toggl.client:
+                base_uri: "%env(TOGGL_API_URL)%"
+                auth_basic: '%env(TOGGL_API_KEY)%:api_token'
+                headers:
+                    Accept: application/json
+                    Content-type: application/json
+
 when@test:
     framework:
         test: true
