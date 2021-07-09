@@ -1,0 +1,718 @@
+# Default configuration for extension with alias: "framework"
+framework:
+    secret:               ~
+
+    # Set true to enable support for the '_method' request parameter to determine the intended HTTP method on POST requests. Note: When using the HttpCache, you need to call the method in your front controller instead
+    http_method_override: true
+    ide:                  null
+    test:                 ~
+    default_locale:       en
+    trusted_hosts:        []
+    trusted_proxies:      ~
+    trusted_headers:
+
+        # Defaults:
+        - x-forwarded-for
+        - x-forwarded-port
+        - x-forwarded-proto
+    error_controller:     error_controller
+    csrf_protection:
+        enabled:              null
+
+    # form configuration
+    form:
+        enabled:              false
+        csrf_protection:
+            enabled:              null
+            field_name:           _token
+        legacy_error_messages: true
+
+    # HTTP cache configuration
+    http_cache:
+        enabled:              false
+        debug:                '%kernel.debug%'
+        trace_level:          ~ # One of "none"; "short"; "full"
+        trace_header:         ~
+        default_ttl:          ~
+        private_headers:      []
+        allow_reload:         ~
+        allow_revalidate:     ~
+        stale_while_revalidate: ~
+        stale_if_error:       ~
+
+    # esi configuration
+    esi:
+        enabled:              false
+
+    # ssi configuration
+    ssi:
+        enabled:              false
+
+    # fragments configuration
+    fragments:
+        enabled:              false
+        hinclude_default_template: null
+        path:                 /_fragment
+
+    # profiler configuration
+    profiler:
+        enabled:              false
+        collect:              true
+        only_exceptions:      false
+        only_main_requests:   false
+        only_master_requests: false # Deprecated (Since symfony/framework-bundle 5.3: Option "only_master_requests" at "framework.profiler" is deprecated, use "only_main_requests" instead.)
+        dsn:                  'file:%kernel.cache_dir%/profiler'
+    workflows:
+        enabled:              false
+        workflows:
+
+            # Prototype
+            name:
+                audit_trail:
+                    enabled:              false
+                type:                 state_machine # One of "workflow"; "state_machine"
+                marking_store:
+                    type:                 ~ # One of "method"
+                    property:             marking
+                    service:              ~
+                supports:             []
+                support_strategy:     ~
+                initial_marking:      []
+
+                # Select which Transition events should be dispatched for this Workflow
+                events_to_dispatch:
+
+                    # Examples:
+                    - workflow.enter
+                    - workflow.transition
+                places:               # Required
+
+                    # Prototype
+                    -
+                        name:                 ~ # Required
+                        metadata:
+
+                            # Examples:
+                            color:               blue
+                            description:         'Workflow to manage article.'
+                transitions:          # Required
+
+                    # Prototype
+                    -
+                        name:                 ~ # Required
+
+                        # An expression to block the transition
+                        guard:                ~ # Example: 'is_fully_authenticated() and is_granted(''ROLE_JOURNALIST'') and subject.getTitle() == ''My first article'''
+                        from:                 []
+                        to:                   []
+                        metadata:
+
+                            # Examples:
+                            color:               blue
+                            description:         'Workflow to manage article.'
+                metadata:
+
+                    # Examples:
+                    color:               blue
+                    description:         'Workflow to manage article.'
+
+    # router configuration
+    router:
+        enabled:              false
+        resource:             ~ # Required
+        type:                 ~
+
+        # The default URI used to generate URLs in a non-HTTP context
+        default_uri:          null
+        http_port:            80
+        https_port:           443
+
+        # set to true to throw an exception when a parameter does not match the requirements
+        # set to false to disable exceptions when a parameter does not match the requirements (and return null instead)
+        # set to null to disable parameter checks against requirements
+        # 'true' is the preferred configuration in development mode, while 'false' or 'null' might be preferred in production
+        strict_requirements:  true
+        utf8:                 null
+
+    # session configuration
+    session:
+        enabled:              false
+        storage_id:           session.storage.native
+        storage_factory_id:   null
+        handler_id:           session.handler.native_file
+        name:                 ~
+        cookie_lifetime:      ~
+        cookie_path:          ~
+        cookie_domain:        ~
+        cookie_secure:        ~ # One of true; false; "auto"
+        cookie_httponly:      true
+        cookie_samesite:      null # One of null; "lax"; "strict"; "none"
+        use_cookies:          ~
+        gc_divisor:           ~
+        gc_probability:       1
+        gc_maxlifetime:       ~
+        save_path:            '%kernel.cache_dir%/sessions'
+
+        # seconds to wait between 2 session metadata updates
+        metadata_update_threshold: 0
+        sid_length:           ~
+        sid_bits_per_character: ~
+
+    # request configuration
+    request:
+        enabled:              false
+        formats:
+
+            # Prototype
+            name:                 []
+
+    # assets configuration
+    assets:
+        enabled:              false
+        version_strategy:     null
+        version:              null
+        version_format:       '%%s?%%s'
+        json_manifest_path:   null
+        base_path:            ''
+        base_urls:            []
+        packages:
+
+            # Prototype
+            name:
+                version_strategy:     null
+                version:              ~
+                version_format:       null
+                json_manifest_path:   null
+                base_path:            ''
+                base_urls:            []
+
+    # translator configuration
+    translator:
+        enabled:              false
+
+        # Defaults to the value of "default_locale".
+        fallbacks:            []
+        logging:              false
+        formatter:            translator.formatter.default
+        cache_dir:            '%kernel.cache_dir%/translations'
+
+        # The default path used to load translations
+        default_path:         '%kernel.project_dir%/translations'
+        paths:                []
+        enabled_locales:      []
+        pseudo_localization:
+            enabled:              false
+            accents:              true
+            expansion_factor:     !!float 1
+            brackets:             true
+            parse_html:           false
+            localizable_html_attributes: []
+
+        # Translation providers you can read/write your translations from
+        providers:
+
+            # Prototype
+            name:
+                dsn:                  ~
+                domains:              []
+
+                # If not set, all locales listed under framework.translator.enabled_locales are used.
+                locales:              []
+
+    # validation configuration
+    validation:
+        enabled:              false
+        cache:                ~
+        enable_annotations:   false
+        static_method:
+
+            # Default:
+            - loadValidatorMetadata
+        translation_domain:   validators
+        email_validation_mode: ~ # One of "html5"; "loose"; "strict"
+        mapping:
+            paths:                []
+        not_compromised_password:
+
+            # When disabled, compromised passwords will be accepted as valid.
+            enabled:              true
+
+            # API endpoint for the NotCompromisedPassword Validator.
+            endpoint:             null
+
+        # A collection of namespaces for which auto-mapping will be enabled by default, or null to opt-in with the EnableAutoMapping constraint.
+        auto_mapping:
+
+            # Examples:
+            App\Entity\:         {  }
+            App\WithSpecificLoaders\: [validator.property_info_loader]
+
+            # Prototype
+            namespace:
+                services:             []
+
+    # annotation configuration
+    annotations:
+        enabled:              false
+        cache:                none
+        file_cache_dir:       '%kernel.cache_dir%/annotations'
+        debug:                true
+
+    # serializer configuration
+    serializer:
+        enabled:              false
+        enable_annotations:   false
+        name_converter:       ~
+        circular_reference_handler: ~
+        max_depth_handler:    ~
+        mapping:
+            paths:                []
+
+    # Property access configuration
+    property_access:
+        enabled:              false
+        magic_call:           false
+        magic_get:            true
+        magic_set:            true
+        throw_exception_on_invalid_index: false
+        throw_exception_on_invalid_property_path: true
+
+    # Property info configuration
+    property_info:
+        enabled:              false
+
+    # Cache configuration
+    cache:
+
+        # Used to namespace cache keys when using several apps with the same shared backend
+        prefix_seed:          _%kernel.project_dir%.%kernel.container_class% # Example: my-application-name/%kernel.environment%
+
+        # App related cache pools configuration
+        app:                  cache.adapter.filesystem
+
+        # System related cache pools configuration
+        system:               cache.adapter.system
+        directory:            '%kernel.cache_dir%/pools'
+        default_doctrine_provider: ~
+        default_psr6_provider: ~
+        default_redis_provider: 'redis://localhost'
+        default_memcached_provider: 'memcached://localhost'
+        default_pdo_provider: null
+        pools:
+
+            # Prototype
+            name:
+
+                # One or more adapters to chain for creating the pool, defaults to "cache.app".
+                adapters:             []
+                tags:                 null
+                public:               false
+
+                # Default lifetime of the pool
+                default_lifetime:     ~ # Example: '"600" for 5 minutes expressed in seconds, "PT5M" for five minutes expressed as ISO 8601 time interval, or "5 minutes" as a date expression'
+
+                # Overwrite the setting from the default provider for this adapter.
+                provider:             ~
+                early_expiration_message_bus: ~ # Example: '"messenger.default_bus" to send early expiration events to the default Messenger bus.'
+                clearer:              ~
+
+    # PHP errors handling configuration
+    php_errors:
+
+        # Use the application logger instead of the PHP logger for logging PHP errors.
+        log:                  true # Example: '"true" to use the default configuration: log all errors. "false" to disable. An integer bit field of E_* constants, or an array mapping E_* constants to log levels.'
+
+        # Throw PHP errors as \ErrorException instances.
+        throw:                true
+
+    # web links configuration
+    web_link:
+        enabled:              false
+
+    # Lock configuration
+    lock:
+        enabled:              false
+        resources:
+
+            # Prototype
+            name:                 []
+
+    # Messenger configuration
+    messenger:
+        enabled:              false
+        routing:
+
+            # Prototype
+            message_class:
+                senders:              []
+        serializer:
+
+            # Service id to use as the default serializer for the transports.
+            default_serializer:   messenger.transport.native_php_serializer
+            symfony_serializer:
+
+                # Serialization format for the messenger.transport.symfony_serializer service (which is not the serializer used by default).
+                format:               json
+
+                # Context array for the messenger.transport.symfony_serializer service (which is not the serializer used by default).
+                context:
+
+                    # Prototype
+                    name:                 ~
+        transports:
+
+            # Prototype
+            name:
+                dsn:                  ~
+
+                # Service id of a custom serializer to use.
+                serializer:           null
+                options:              []
+
+                # Transport name to send failed messages to (after all retries have failed).
+                failure_transport:    null
+                retry_strategy:
+
+                    # Service id to override the retry strategy entirely
+                    service:              null
+                    max_retries:          3
+
+                    # Time in ms to delay (or the initial value when multiplier is used)
+                    delay:                1000
+
+                    # If greater than 1, delay will grow exponentially for each retry: this delay = (delay * (multiple ^ retries))
+                    multiplier:           2
+
+                    # Max time in ms that a retry should ever be delayed (0 = infinite)
+                    max_delay:            0
+
+        # Transport name to send failed messages to (after all retries have failed).
+        failure_transport:    null
+        default_bus:          null
+        buses:
+
+            # Prototype
+            name:
+                default_middleware:   true # One of true; false; "allow_no_handlers"
+                middleware:
+
+                    # Prototype
+                    -
+                        id:                   ~ # Required
+                        arguments:            []
+
+    # Enabled by default when debug is enabled.
+    disallow_search_engine_index: true
+
+    # HTTP Client configuration
+    http_client:
+        enabled:              true
+
+        # The maximum number of connections to a single host.
+        max_host_connections: ~
+        default_options:
+
+            # Associative array: header => value(s).
+            headers:
+
+                # Prototype
+                name:                 ~
+
+            # The maximum number of redirects to follow.
+            max_redirects:        ~
+
+            # The default HTTP version, typically 1.1 or 2.0, leave to null for the best version.
+            http_version:         ~
+
+            # Associative array: domain => IP.
+            resolve:
+
+                # Prototype
+                host:                 ~
+
+            # The URL of the proxy to pass requests through or null for automatic detection.
+            proxy:                ~
+
+            # A comma separated list of hosts that do not require a proxy to be reached.
+            no_proxy:             ~
+
+            # The idle timeout, defaults to the "default_socket_timeout" ini parameter.
+            timeout:              ~
+
+            # The maximum execution time for the request+response as a whole.
+            max_duration:         ~
+
+            # A network interface name, IP address, a host name or a UNIX socket to bind to.
+            bindto:               ~
+
+            # Indicates if the peer should be verified in an SSL/TLS context.
+            verify_peer:          ~
+
+            # Indicates if the host should exist as a certificate common name.
+            verify_host:          ~
+
+            # A certificate authority file.
+            cafile:               ~
+
+            # A directory that contains multiple certificate authority files.
+            capath:               ~
+
+            # A PEM formatted certificate file.
+            local_cert:           ~
+
+            # A private key file.
+            local_pk:             ~
+
+            # The passphrase used to encrypt the "local_pk" file.
+            passphrase:           ~
+
+            # A list of SSL/TLS ciphers separated by colons, commas or spaces (e.g. "RC3-SHA:TLS13-AES-128-GCM-SHA256"...)
+            ciphers:              ~
+
+            # Associative array: hashing algorithm => hash(es).
+            peer_fingerprint:
+                sha1:                 ~
+                pin-sha256:           ~
+                md5:                  ~
+            retry_failed:
+                enabled:              false
+
+                # service id to override the retry strategy
+                retry_strategy:       null
+
+                # A list of HTTP status code that triggers a retry
+                http_codes:
+
+                    # Prototype
+                    code:
+                        code:                 ~
+
+                        # A list of HTTP methods that triggers a retry for this status code. When empty, all methods are retried
+                        methods:              []
+                max_retries:          3
+
+                # Time in ms to delay (or the initial value when multiplier is used)
+                delay:                1000
+
+                # If greater than 1, delay will grow exponentially for each retry: delay * (multiple ^ retries)
+                multiplier:           2
+
+                # Max time in ms that a retry should ever be delayed (0 = infinite)
+                max_delay:            0
+
+                # Randomness in percent (between 0 and 1) to apply to the delay
+                jitter:               0.1
+
+        # The id of the service that should generate mock responses. It should be either an invokable or an iterable.
+        mock_response_factory: ~
+        scoped_clients:
+
+            # Prototype
+            name:
+
+                # The regular expression that the request URL must match before adding the other options. When none is provided, the base URI is used instead.
+                scope:                ~
+
+                # The URI to resolve relative URLs, following rules in RFC 3985, section 2.
+                base_uri:             ~
+
+                # An HTTP Basic authentication "username:password".
+                auth_basic:           ~
+
+                # A token enabling HTTP Bearer authorization.
+                auth_bearer:          ~
+
+                # A "username:password" pair to use Microsoft NTLM authentication (requires the cURL extension).
+                auth_ntlm:            ~
+
+                # Associative array of query string values merged with the base URI.
+                query:
+
+                    # Prototype
+                    key:                  ~
+
+                # Associative array: header => value(s).
+                headers:
+
+                    # Prototype
+                    name:                 ~
+
+                # The maximum number of redirects to follow.
+                max_redirects:        ~
+
+                # The default HTTP version, typically 1.1 or 2.0, leave to null for the best version.
+                http_version:         ~
+
+                # Associative array: domain => IP.
+                resolve:
+
+                    # Prototype
+                    host:                 ~
+
+                # The URL of the proxy to pass requests through or null for automatic detection.
+                proxy:                ~
+
+                # A comma separated list of hosts that do not require a proxy to be reached.
+                no_proxy:             ~
+
+                # The idle timeout, defaults to the "default_socket_timeout" ini parameter.
+                timeout:              ~
+
+                # The maximum execution time for the request+response as a whole.
+                max_duration:         ~
+
+                # A network interface name, IP address, a host name or a UNIX socket to bind to.
+                bindto:               ~
+
+                # Indicates if the peer should be verified in an SSL/TLS context.
+                verify_peer:          ~
+
+                # Indicates if the host should exist as a certificate common name.
+                verify_host:          ~
+
+                # A certificate authority file.
+                cafile:               ~
+
+                # A directory that contains multiple certificate authority files.
+                capath:               ~
+
+                # A PEM formatted certificate file.
+                local_cert:           ~
+
+                # A private key file.
+                local_pk:             ~
+
+                # The passphrase used to encrypt the "local_pk" file.
+                passphrase:           ~
+
+                # A list of SSL/TLS ciphers separated by colons, commas or spaces (e.g. "RC3-SHA:TLS13-AES-128-GCM-SHA256"...)
+                ciphers:              ~
+
+                # Associative array: hashing algorithm => hash(es).
+                peer_fingerprint:
+                    sha1:                 ~
+                    pin-sha256:           ~
+                    md5:                  ~
+                retry_failed:
+                    enabled:              false
+
+                    # service id to override the retry strategy
+                    retry_strategy:       null
+
+                    # A list of HTTP status code that triggers a retry
+                    http_codes:
+
+                        # Prototype
+                        code:
+                            code:                 ~
+
+                            # A list of HTTP methods that triggers a retry for this status code. When empty, all methods are retried
+                            methods:              []
+                    max_retries:          3
+
+                    # Time in ms to delay (or the initial value when multiplier is used)
+                    delay:                1000
+
+                    # If greater than 1, delay will grow exponentially for each retry: delay * (multiple ^ retries)
+                    multiplier:           2
+
+                    # Max time in ms that a retry should ever be delayed (0 = infinite)
+                    max_delay:            0
+
+                    # Randomness in percent (between 0 and 1) to apply to the delay
+                    jitter:               0.1
+
+    # Mailer configuration
+    mailer:
+        enabled:              false
+
+        # The message bus to use. Defaults to the default bus if the Messenger component is installed.
+        message_bus:          null
+        dsn:                  null
+        transports:
+
+            # Prototype
+            name:                 ~
+
+        # Mailer Envelope configuration
+        envelope:
+            sender:               ~
+            recipients:           []
+        headers:
+
+            # Prototype
+            name:
+                value:                ~
+    secrets:
+        enabled:              true
+        vault_directory:      '%kernel.project_dir%/config/secrets/%kernel.runtime_environment%'
+        local_dotenv_file:    '%kernel.project_dir%/.env.%kernel.environment%.local'
+        decryption_env_var:   'base64:default::SYMFONY_DECRYPTION_SECRET'
+
+    # Notifier configuration
+    notifier:
+        enabled:              false
+        chatter_transports:
+
+            # Prototype
+            name:                 ~
+        texter_transports:
+
+            # Prototype
+            name:                 ~
+        notification_on_failed_messages: false
+        channel_policy:
+
+            # Prototype
+            name:                 []
+        admin_recipients:
+
+            # Prototype
+            -
+                email:                ~
+                phone:                ''
+
+    # Rate limiter configuration
+    rate_limiter:
+        enabled:              false
+        limiters:
+
+            # Prototype
+            name:
+
+                # The service ID of the lock factory used by this limiter (or null to disable locking)
+                lock_factory:         lock.factory
+
+                # The cache pool to use for storing the current limiter state
+                cache_pool:           cache.rate_limiter
+
+                # The service ID of a custom storage implementation, this precedes any configured "cache_pool"
+                storage_service:      null
+
+                # The algorithm to be used by this limiter
+                policy:               ~ # One of "fixed_window"; "token_bucket"; "sliding_window"; "no_limit", Required
+
+                # The maximum allowed hits in a fixed interval or burst
+                limit:                ~ # Required
+
+                # Configures the fixed interval if "policy" is set to "fixed_window" or "sliding_window". The value must be a number followed by "second", "minute", "hour", "day", "week" or "month" (or their plural equivalent).
+                interval:             ~
+
+                # Configures the fill rate if "policy" is set to "token_bucket"
+                rate:
+
+                    # Configures the rate interval. The value must be a number followed by "second", "minute", "hour", "day", "week" or "month" (or their plural equivalent).
+                    interval:             ~
+
+                    # Amount of tokens to add each interval
+                    amount:               1
+
+    # Uid configuration
+    uid:
+        enabled:              false
+        default_uuid_version: 6 # One of 6; 4; 1
+        name_based_uuid_version: 5 # One of 5; 3
+        name_based_uuid_namespace: ~
+        time_based_uuid_version: 6 # One of 6; 1
+        time_based_uuid_node: ~
+
